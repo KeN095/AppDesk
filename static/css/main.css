@@ -1,0 +1,79 @@
+/*Aligns all header tags used in app */
+h1, h2, h3 {
+    text-align:center;
+}
+
+div {
+    text-align: center;
+}
+
+p{
+    display:inline-block;
+}
+
+/* Provides spacing for days from Sunday to Saturday */
+.dayspacing {
+    word-spacing:100px;
+}
+
+/* Initally blocks off the form from being displayed until a cell is clicked on*/
+#aptdetails{
+    display:none;
+}
+
+/* Sets a smooth scrolling behavior */
+html {
+    scroll-behavior: smooth;
+  }
+
+
+table, th, td{
+    border: 1px solid black;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+
+/* Makes calendar look more clean */
+.calendar{
+    border: 1px solid black;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Applies a yellow highlight for whenever the cursor hovers a cell */
+tbody tr td:hover a{
+    background-color: yellow;
+   
+}
+
+/* Targets the a tag enclosed in td, and centers the number in each cell */
+tbody tr td a{ 
+    text-align:center;
+}
+
+/* No underlining with links and sets the yellow highlight to cover the full box 
+Also try combining  with above css rules
+*/
+
+td a{
+    display:block;
+    width:100%;
+    text-decoration-line: none;
+}
+
+/*Expands each cell */
+td {
+    height: 92px;
+    width: 22px;
+}
+
+p {
+    text-align:center;
+}
+
+
+
+  

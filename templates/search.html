@@ -1,0 +1,195 @@
+{% extends 'home.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+
+    <form action = "{{ url_for('search') }}" method = "POST" id = "obtaindetails">
+
+        <br>
+        <br>
+
+        {% if not session['lastName'] or data is none %}
+        <div>
+            <label for = "aptSearch">Your appointment ID: </label>
+            <input type = "text" id = "searchID" name = "aptSearch" placeholder = "12345" maxlength="6" title = "Retrieve details from an appointment you made.">
+        </div>
+        
+
+        <div>
+            <p>--OR--</p>
+        </div>
+        {% endif %}
+        <div>
+            <label for = "idSearch">Your insurance ID: </label>
+            <input type = "text" id = "searchInsurID" name = "idSearch" placeholder = "1234567890" maxlength = "10" title = "Retrieve details from multiple appointments you made." >
+        </div>
+
+        <br>
+        <br>
+
+        <div>
+            <button type="submit" form ="obtaindetails">Search</button>
+        </div>
+
+    </form>
+
+    <br>
+    <br>
+
+    {% if session['lastName'] %}
+    <table style="width:30%"}>
+
+        <tr>
+            <th colspan = "2">Your appointment</th>
+        </tr>
+
+        <tr>
+            <td>First name</td>
+            <td>{{session['patient']}}</td>
+        </tr>
+
+        <tr>
+            <td>Last name</td>
+            <td>{{session['lastName']}}</td>
+        </tr>
+
+        <tr>
+            <td>Insurance ID</td>
+            <td>{{session['insuranceID']}}</td>
+        </tr>
+
+
+        <tr>
+            <td>Appointment ID</td>
+            <td>{{session['aptID']}}</td>
+        </tr>
+
+        <tr>
+            <td>Doctor</td>
+            <td>{{session['doctor']}}</td>
+        </tr>
+
+        <tr>
+            <td>Phone number</td>
+            <td>{{session['phoneNum']}}</td>
+        </tr>
+
+        <tr>
+            <td>Email</td>
+            <td>{{session['email']}}</td>
+        </tr>
+        
+        
+    </table>
+
+    <br>
+    <br>
+
+    <div>
+        
+        <a href = "">
+            <button type="button">Edit</button>
+        </a>
+        
+        &nbsp; &nbsp;
+
+        <a href = "{{ url_for('delete') }}">
+            <button type="button">Cancel</button>
+        </a>
+    </div>
+    {% endif %}
+
+    <!--
+    <table style="width:30%">
+        
+        <tr>
+            <th colspan = "2">Your appointment</th>
+        </tr>
+
+        <tr>
+            <td>First name</td>
+            <td>{{firstName}}</td>
+        </tr>
+
+        <tr>
+            <td>Last name</td>
+            <td>{{lastName}}</td>
+        </tr>
+
+        <tr>
+            <td>Insurance ID</td>
+            <td>{{insuranceID}}</td>
+        </tr>
+
+        <tr>
+            <td>Appointment ID</td>
+            <td>{{aptID}}</td>
+        </tr>
+        
+        <tr>
+            <td>Doctor</td>
+            <td>{{doctor}}</td>
+        </tr>
+
+        <tr>
+            <td>Phone number</td>
+            <td>{{phoneNum}}</td>
+        </tr>
+
+        <tr>
+            <td>Email</td>
+            <td>{{email}}</td>
+        </tr>
+
+    </table>
+-->
+    
+{% if info is defined %}
+<table style="width:30%">
+    <tr>
+        <th colspan = "2">{{info.firstName}}'s appointment</th>
+    </tr>
+    <tr>
+        <td>First name</td>
+        <td>{{info.firstName}}</td>
+    </tr>
+
+    <tr>
+        <td>Last name</td>
+        <td>{{info.lastName}}</td>
+    </tr>
+
+    <tr>
+        <td>Doctor</td>
+        <td>{{info.doctor}}</td>
+    </tr>
+
+    <tr>
+        <td>Insurance ID</td>
+        <td>{{info.insuranceID}}</td>
+    </tr>
+
+    <tr>
+        <td>Appointment ID</td>
+        <td>{{info.aptID}}</td>
+    </tr>
+
+    <tr>
+        <td>Email</td>
+        <td>{{info.email}}</td>
+    </tr>
+
+    <tr>
+        <td>Phone number</td>
+        <td>{{info.phoneNumber}}</td>
+    </tr>
+</table>
+
+{% endif %}
+
+
+
+{% endblock %}

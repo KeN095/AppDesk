@@ -1,0 +1,100 @@
+{% extends 'home.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{%block body%}
+
+<div>
+    <form action = "{{ url_for('confirm') }}" method = "POST" id ="confirm"></form>
+        <table style="border:none;">
+            <th colspan="2" style="border:none;"><h3>Please confirm your appointment details</h3></th>
+            
+            <tr>
+                <td style="border:none;">
+                    First name: 
+                </td>
+
+                <td style="border:none;">
+                    {{request.form['fName']}}
+                </td>
+            </tr>
+
+            <tr>
+                <td style="border:none;">
+                    Last name:
+                </td>
+
+                <td style="border:none;">
+                    {{request.form['lName']}}
+                </td>
+            </tr>
+
+            <tr>
+                <td style="border:none;">
+                    Insurance ID: 
+                </td>
+
+                <td style="border:none;">
+                    {{request.form['insuranceID']}}
+                </td>
+            </tr>
+
+            <tr>
+                <td style="border:none;">
+                    Doctor: 
+                </td>
+
+                <td style="border:none;">
+                    Dr. {{request.form['doctors']}}
+                </td>
+            </tr>
+
+            <tr>
+                <td style="border:none;">
+                    Date and time:
+                </td>
+
+                <td style="border:none;">
+
+                </td>
+            </tr>
+
+            <tr>
+                <td style="border:none;">
+                    Email:
+                </td>
+
+                <td style="border:none;">
+                    {{request.form['email']}}
+                </td>
+            </tr>
+            
+            <tr>
+                <td style="border:none;">
+                    Phone number: 
+                </td>
+
+                <td style="border:none;">
+                    {{request.form['phoneNum']}}
+                </td>
+            </tr>
+
+            <tr>
+                <td style="border:none;">
+                    Extra info:
+                </td>
+
+                <td style="border:none;">
+                    {{request.form['extranotes']}}
+                </td>
+            </tr>
+            
+
+        </table>
+        <button type="submit" form ="confirm">Submit</button>
+
+    </form>
+</div>
+{% endblock %}

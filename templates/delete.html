@@ -1,0 +1,14 @@
+{% extends 'home.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+
+<h1> Your appointment with Dr. {{doctor}} has been cancelled.</h1>
+<h2>If you would like to make an appointment, please click <a href="{{ url_for('index') }}">here</a></h2>
+
+
+
+{% endblock %}
