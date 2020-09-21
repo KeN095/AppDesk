@@ -54,3 +54,39 @@ AppDesk, short for Appointment Desk, is a CRUD app made in Flask that allows use
 
 - [ ] Add CSS
 
+- [ ] Emailing (for confirming any appointment action, reminder before appointment, and retrieving lost appointment ID)
+
+**Pages**
+
+* Create - For creating appointments, also the landing page
+
+* Search - For retrieving appointment information by inputting appointment ID
+
+* Confirm - For confirming appointment details and any appointment action
+
+* Success - For showing users action was done sucessfully
+
+* Update - For updating appointments
+
+* Home - empty page/a template to extend of off
+
+**Page routes**
+
+**Create**
+
+Create.html <kbd>→</kbd> Confirm.html <kbd>→</kbd> Success.html
+
+**Delete**
+
+Delete.html <kbd>→</kbd> Confirm.html <kbd>→</kbd> Success.html
+
+
+**Search**
+
+Search.html
+
+**Update**
+
+Create.html <kbd>→</kbd> Search/login.html <kbd>→</kbd> Create.html <kbd>→</kbd> Success.html
+
+
