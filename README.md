@@ -31,6 +31,8 @@ AppDesk, short for Appointment Desk, is a CRUD app made in Flask that allows use
 
 - [ ] Establish forgotten appointment ID to retrieve user appointment details
 
+- [ ] Destroy data on search page if search was already made so that it isnt persistent through page refresh
+
 
 **Update**
 
@@ -55,6 +57,12 @@ AppDesk, short for Appointment Desk, is a CRUD app made in Flask that allows use
 - [ ] Add CSS
 
 - [ ] Emailing (for confirming any appointment action, reminder before appointment, and retrieving lost appointment ID)
+
+- [ ] Maybe determine if inputted email is valid
+
+- [ ] Add in message flashing
+
+- [ ] Define how long session data is valid for (Should be valid as long as you are on the tab)
 
 **Pages**
 
