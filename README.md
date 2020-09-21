@@ -78,11 +78,11 @@ Create.html :arrow_right: Confirm.html :arrow_right: Success.html
 
 **Delete**
 
-Delete.html :arrow_right: Confirm.html  :arrow_right: Success.html
+>Delete.html :arrow_right: Confirm.html  :arrow_right: Success.html
 
-    If no appointment in session
+>>If no appointment in session
 
-    Delete.html :arrow_right: Search/login.html :arrow_right: Delete.html :arrow_right: Confirm.html :arrow_right: Success.html
+>>Delete.html :arrow_right: Search/login.html :arrow_right: Delete.html :arrow_right: Confirm.html :arrow_right: Success.html
 
 
 
