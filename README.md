@@ -58,15 +58,15 @@ AppDesk, short for Appointment Desk, is a CRUD app made in Flask that allows use
 
 **Pages**
 
-* Create - For creating appointments, also the landing page
+* Create - For creating appointments, also the landing page (Extends home)
 
-* Search - For retrieving appointment information by inputting appointment ID
+* Search - For retrieving appointment information by inputting appointment ID (Extends home)
 
-* Confirm - For confirming appointment details and any appointment action
+* Confirm - For confirming appointment details and any appointment action (Extends home)
 
-* Success - For showing users action was done sucessfully
+* Success - For showing users action was done sucessfully (Extends home)
 
-* Update - For updating appointments
+* Update - For updating appointments (Extends create or it uses create with textbox prefilled from data from database)
 
 * Home - empty page/a template to extend of off
 
@@ -74,19 +74,34 @@ AppDesk, short for Appointment Desk, is a CRUD app made in Flask that allows use
 
 **Create**
 
-Create.html <kbd>→</kbd> Confirm.html <kbd>→</kbd> Success.html
+Create.html :arrow_right: Confirm.html :arrow_right: Success.html
 
 **Delete**
 
-Delete.html <kbd>→</kbd> Confirm.html <kbd>→</kbd> Success.html
+Delete.html :arrow_right: Confirm.html  :arrow_right: Success.html
+
+    If no appointment in session
+
+    Delete.html :arrow_right: Search/login.html :arrow_right: Delete.html :arrow_right: Confirm.html :arrow_right: Success.html
+
 
 
 **Search**
 
 Search.html
 
+    If no appointment in session
+
+    Search.html :arrow_right: Search/login.html :arrow_right: Search.html 
+
+
 **Update**
 
-Create.html <kbd>→</kbd> Search/login.html <kbd>→</kbd> Create.html <kbd>→</kbd> Success.html
+Create.html :arrow_right: Search/login.html :arrow_right: Create.html :arrow_right: Success.html
+
+    If no appointment in session
+    
+Create.html :arrow_right: Search/login.html :arrow_right: Create.html :arrow_right: Confirm.html :arrow_right: Success.html
+
 
 
