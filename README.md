@@ -129,9 +129,9 @@ Create.html :arrow_right: Search/login.html :arrow_right: Create.html :arrow_rig
 
 * ~~Insurance ID - The users insurance ID number. Almost has no use in the app other than a secondary unique key in identifying a person~~
 
-Total attributes: 9
-Idle attributes: 3
-Useful attributes: 6
+Total attributes: 9  
+Idle attributes: 3  
+Useful attributes: 6  
 
 
 
