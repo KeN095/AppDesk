@@ -111,5 +111,30 @@ Create.html :arrow_right: Search/login.html :arrow_right: Create.html :arrow_rig
     
 Create.html :arrow_right: Search/login.html :arrow_right: Create.html :arrow_right: Confirm.html :arrow_right: Success.html
 
+**Database**
+
+* firstName - Users first name, used to address the user in app
+
+* lastName - Users last name, used to address the user in app
+
+* Appointment ID - Randomly generated 6 digit ID used to identify the users appointment. Primary key.
+
+* Email - Users email. Used for delivering appointments actions (confirmation, deleting and updating appointments) and retrieving forgotten appointment ID's
+
+* Date/time - The date/time of the users appointment. Can be used in send out the reminder email.
+
+* Doctor - The appointed doctor for the users appointment.
+
+* ~~Phone number - Users point of contact. Almost has no use in the app so it can be trashed~~
+
+* ~~Extra notes - Extra notes the user can inform of for their appointment. Almost has no use in app.~~
+
+* ~~Insurance ID - The users insurance ID number. Almost has no use in the app other than a secondary unique key in identifying a person~~
+
+Total attributes: 9
+Idle attributes: 3
+Useful attributes: 6
+
+
 
 
