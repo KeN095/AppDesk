@@ -64,7 +64,7 @@ AppDesk, short for Appointment Desk, is a CRUD app made in Flask that allows use
 
 - [ ] Define how long session data is valid for (Should be valid as long as you are on the tab)
 
-**Pages**
+# Pages
 
 * Create - For creating appointments, also the landing page (Extends home)
 
@@ -78,7 +78,7 @@ AppDesk, short for Appointment Desk, is a CRUD app made in Flask that allows use
 
 * Home - empty page/a template to extend of off
 
-**Page routes**
+# Page routes
 
 **Create**
 
@@ -91,8 +91,6 @@ Delete.html :arrow_right: Confirm.html  :arrow_right: Success.html
 *If no appointment in session*
 
 Delete.html :arrow_right: Search/login.html :arrow_right: Delete.html :arrow_right: Confirm.html :arrow_right: Success.html
-
-
 
 **Search**
 
@@ -111,7 +109,7 @@ Create.html :arrow_right: Search/login.html :arrow_right: Create.html :arrow_rig
     
 Create.html :arrow_right: Search/login.html :arrow_right: Create.html :arrow_right: Confirm.html :arrow_right: Success.html
 
-**Database**
+# Database
 
 * firstName - Users first name, used to address the user in app
 
