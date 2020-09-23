@@ -4,13 +4,13 @@ var doctors = ["Dr. Asteeks", "Dr. Chen", "Dr. Bane", "Dr. Brown", "Dr. Baker", 
 
 var Months = ["Janurary", "Feburary", "March", "April", "May" , "June", "July", "August" , "September", "October", "November", "December"];
 
-var date = new Date()
+var date = new Date();
 
 var monthValue = date.getMonth();
 var month = Months[monthValue];
 var year = date.getFullYear();
 
-document.getElementById('mnthAndYr').innerHTML = month + " " + year;;
+document.getElementById('mnthAndYr').innerHTML = month + " " + year;
 
 function getDoctors(){
 

@@ -37,43 +37,7 @@ def index():
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    months = ['Janurary','Feburary','March','April','May','June','July','August','September','October','November','December']
-    today = datetime.today()
-
-    if request.method == 'POST':
-        '''
-        firstName = request.form.get('fName')
-        lastName = request.form.get('lName')
-        insuranceID = request.form.get('insuranceID')
-        doctor = request.form.get('doctors')
-        phone_number = request.form.get('phoneNum') #works
-        email = request.form.get('email') #works
-        extraInfo = request.form.get('extranotes') #works 
-        '''
-        # all works 
-        firstName = request.form['fName']
-        lastName = request.form['lName']
-        insuranceID = request.form['insuranceID']
-        doctor = request.form['doctors']
-        phone_number = request.form['phoneNum'] 
-        email = request.form['email'] 
-        extraInfo = request.form['extranotes']
-        #aptID = random.randint(100000, 999999)
-
-        new_apt = appointment(insuranceID, firstName, lastName, phone_number, email, doctor, extraInfo)
-        
-        try:
-            db.session.add(new_apt)
-            db.session.commit()
-
-            #fix redirecting with parameters
-            #return redirect(url_for('confirm', officer = request.form['doctors'] ))
-
-        except:
-            return 'There was an issue adding your appointment to the system. Please make sure all your details are correct' 
-        
-    else:
-        return render_template('create.html', days = ['Sun', 'Mon','Tue','Wed','Thu','Fri','Sat'] )
+    return render_template('create.html', days = ['Sun', 'Mon','Tue','Wed','Thu','Fri','Sat'] )
 
 @app.route('/success', methods=['GET', 'POST'])
 def success():
@@ -90,10 +54,8 @@ def success():
             
             #push request.form data into appointment object instead of storing them into variables
 
-            try:
-                while appointment.query.filter_by(aptID = aptID) != None:
-                    aptID = random.randint(100000, 999999)
-                
+            try: 
+        
                 new_apt = appointment(aptID, insuranceID, firstName, lastName, phone_number, email, doctor, extraInfo)
 
                 db.session.add(new_apt)
