@@ -4,6 +4,8 @@ var doctors = ["Dr. Asteeks", "Dr. Chen", "Dr. Bane", "Dr. Brown", "Dr. Baker", 
 
 var Months = ["Janurary", "Feburary", "March", "April", "May" , "June", "July", "August" , "September", "October", "November", "December"];
 
+var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
 var date = new Date();
 
 var monthValue = date.getMonth();
@@ -11,6 +13,15 @@ var month = Months[monthValue];
 var year = date.getFullYear();
 
 document.getElementById('mnthAndYr').innerHTML = month + " " + year;
+
+var element = document.getElementById("daysOfWeek");
+
+for (var i = 0; i < days.length; i++){
+    var tableHeader = document.createElement("th");
+    var day = document.createTextNode(days[i]);
+    tableHeader.appendChild(day);
+    element.appendChild(tableHeader);
+}
 
 function getDoctors(){
 
@@ -26,6 +37,7 @@ function getDoctors(){
         select.appendChild(choice);
     }
 }
+
 
 function incrementHeader(){
 

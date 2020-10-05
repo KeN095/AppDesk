@@ -34,9 +34,11 @@
                             </b>
                         </td>
                     </tr>
-                    {% for day in days %}
-                    <th>{{day}}</th>
-                    {% endfor %}
+                    
+                    <tr id = "daysOfWeek">
+                       
+                    </tr>
+
                 </thead>
                 <tbody>
                     <tr>
@@ -105,17 +107,6 @@
         
         </section>
 
-        <!--
-        <section>
-            
-            {% for i in p %}
-
-            
-
-            {% endfor %}
-        </section>
-        -->
-
         <section>
 
             <br>
@@ -123,85 +114,24 @@
             <br>
 
             <form action = "{{ url_for('success') }}" method = "POST" id = "aptdetails">
-                
-                
-                <div>
-                    <label for="fName">First name: * </label>
-                    <br>
-                    <input type="text" id="first" name = "fName"  placeholder = "Jones"  maxlength = 20 required>
-                </div>
+                {{ form.hidden_tag() }}
 
+                {% for field in form %}
                 <br>
 
                 <div>
-                    <label for="lName">Last name: *</label>
-                    <br>
-                    <input type="text" id="last" name = "lName" placeholder = "Smith" maxlength = 20 required> 
+                    {% if field.type == "SubmitField" %}
+                        {{field}}
+                    {% else %}
+
+                        {{ field.label }}*
+                        <br>
+                        {{ field }}
+                    {% endif %}
+                    
                 </div>
-
-                <br>
-
-                <div>
-                    <label for="insuranceID">Insurance ID number: *</label>
-                    <br>
-                    <input type="text" id="idnum" name = "insuranceID"  placeholder = "123456789" maxlength = 10 required>
-                </div>
-
-                <br>
-
-                <div>
-                    <label for="doctors">Doctors: *</label>
-
-                    <br>
-
-                    <select name = "doctors" id = "doctors" onchange = "getDoctors()"required>
-                        <option value = " " selected></option>
-                      
-                    </select>
-                </div>
-
-                <br>
-
-                <div>
-                    <label for="phoneNum">Phone number: *</label>
-                    <br>
-                    <input type="tel" name="phoneNum" placeholder = "123-456-7890" maxlength="14" required>
-                </div>
-
-                <br>
-
-                <div>
-                    <label for="email"> Email: *</label>
-                    <br>
-                    <input type="email" name="email" placeholder="example@domain.com" required>
-                </div>
-
-                <br>
-
-                <div>
-                    <label for="notes">Extra notes:</label>
-                    <br>
-                    <textarea id="notes" name="extranotes" rows="4" cols="50"></textarea>
-                </div>
-
-                <br>
-
-                <div>
-                    <button type="submit" form ="aptdetails">Submit</button>
-                </div>
-
-                <!--
-                    fName: pattern="[A-Za-z]"
-                    lName: pattern="[A-Za-z]"
-                    insuranceID: pattern = "[0-9]" 
-                    phoneNum: pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                -->
-
                 <br>
                 
-            <p>* : Fields must be filled out </p>
-            </form>
+                {% endfor %}
         </section>
     {% endblock %}
- 
-

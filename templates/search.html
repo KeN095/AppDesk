@@ -8,31 +8,41 @@
 
     <form action = "{{ url_for('search') }}" method = "POST" id = "obtaindetails">
 
+        {{ form.hidden_tag() }}
+
+        {% for field in form %}
+        <br>
+
+        <div>
+            {% if field.type == "SubmitField" %}
+                {{field}}
+            {% else %}
+
+                {{ field.label }}*
+                <br>
+                {{ field }}
+            {% endif %}
+            
+        </div>
+        <br>
+        
+        {% endfor %}
+        <!--
         <br>
         <br>
 
-        {% if not session['lastName'] or data is none %}
         <div>
             <label for = "aptSearch">Your appointment ID: </label>
             <input type = "text" id = "searchID" name = "aptSearch" placeholder = "12345" maxlength="6" title = "Retrieve details from an appointment you made.">
         </div>
-        
-
-        <div>
-            <p>--OR--</p>
-        </div>
-        {% endif %}
-        <div>
-            <label for = "idSearch">Your insurance ID: </label>
-            <input type = "text" id = "searchInsurID" name = "idSearch" placeholder = "1234567890" maxlength = "10" title = "Retrieve details from multiple appointments you made." >
-        </div>
-
+    
         <br>
         <br>
 
         <div>
             <button type="submit" form ="obtaindetails">Search</button>
         </div>
+        -->
 
     </form>
 
@@ -48,19 +58,13 @@
 
         <tr>
             <td>First name</td>
-            <td>{{session['patient']}}</td>
+            <td>{{session['firstName']}}</td>
         </tr>
 
         <tr>
             <td>Last name</td>
             <td>{{session['lastName']}}</td>
         </tr>
-
-        <tr>
-            <td>Insurance ID</td>
-            <td>{{session['insuranceID']}}</td>
-        </tr>
-
 
         <tr>
             <td>Appointment ID</td>
@@ -70,11 +74,6 @@
         <tr>
             <td>Doctor</td>
             <td>{{session['doctor']}}</td>
-        </tr>
-
-        <tr>
-            <td>Phone number</td>
-            <td>{{session['phoneNum']}}</td>
         </tr>
 
         <tr>
@@ -94,7 +93,7 @@
             <button type="button">Edit</button>
         </a>
         
-        &nbsp; &nbsp;
+        &nbsp;&nbsp;
 
         <a href = "{{ url_for('delete') }}">
             <button type="button">Cancel</button>
@@ -102,52 +101,9 @@
     </div>
     {% endif %}
 
-    <!--
-    <table style="width:30%">
-        
-        <tr>
-            <th colspan = "2">Your appointment</th>
-        </tr>
-
-        <tr>
-            <td>First name</td>
-            <td>{{firstName}}</td>
-        </tr>
-
-        <tr>
-            <td>Last name</td>
-            <td>{{lastName}}</td>
-        </tr>
-
-        <tr>
-            <td>Insurance ID</td>
-            <td>{{insuranceID}}</td>
-        </tr>
-
-        <tr>
-            <td>Appointment ID</td>
-            <td>{{aptID}}</td>
-        </tr>
-        
-        <tr>
-            <td>Doctor</td>
-            <td>{{doctor}}</td>
-        </tr>
-
-        <tr>
-            <td>Phone number</td>
-            <td>{{phoneNum}}</td>
-        </tr>
-
-        <tr>
-            <td>Email</td>
-            <td>{{email}}</td>
-        </tr>
-
-    </table>
--->
 
 {% if info is defined %}
+
 <table style="width:30%">
     <tr>
         <th colspan = "2">{{info.firstName}}'s appointment</th>
@@ -168,11 +124,6 @@
     </tr>
 
     <tr>
-        <td>Insurance ID</td>
-        <td>{{info.insuranceID}}</td>
-    </tr>
-
-    <tr>
         <td>Appointment ID</td>
         <td>{{info.aptID}}</td>
     </tr>
@@ -182,10 +133,6 @@
         <td>{{info.email}}</td>
     </tr>
 
-    <tr>
-        <td>Phone number</td>
-        <td>{{info.phoneNumber}}</td>
-    </tr>
 </table>
 
 

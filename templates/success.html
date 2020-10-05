@@ -8,7 +8,7 @@
 
 <h1>Thank you Mr. {{session['lastName']}}.</h1>
 <h2>Your appointment with Doctor {{session['doctor']}} has been made for &lt Day &gt at &lt Time &gt .</h2>
-<h3>Keep your appointment ID number : {{session['aptID']}} saved for your records</h3>
+<h3>Keep your appointment ID: {{session['aptID']}} saved for your records</h3>
 <h3>You can also <a href ="">edit</a> or <a href="{{ url_for('delete') }}">cancel</a> your appointment anytime.</h3>
 
 {%endblock%}

@@ -1,6 +1,7 @@
 from flask import Flask, render_template, url_for, request, redirect, session, flash
 from datetime import datetime, timedelta
 from flask_sqlalchemy import SQLAlchemy
+from forms import AppointmentForm, LookUpForm
 import random
 
 app = Flask(__name__)
@@ -10,55 +11,42 @@ db = SQLAlchemy(app)
 
 class appointment(db.Model):
     aptID = db.Column(db.String(6), primary_key = True, nullable = False)
-    insuranceID = db.Column(db.String(10), nullable = False)
     firstName = db.Column(db.String(20), nullable = False)
     lastName = db.Column(db.String(20), nullable = False)
-    phoneNumber = db.Column(db.String(16), nullable = False)
     email = db.Column(db.String(40), nullable = False)
     doctor = db.Column(db.String(40), nullable = False)
-    notes = db.Column(db.String(300), nullable = True)
     #aptDatetime_db = db.Column(db.String(45), nullable = False)
 
-    def __init__(self, aptID, insuranceID, firstName, lastName, phoneNumber, email, doctor, notes):
+    def __init__(self, aptID, firstName, lastName, email, doctor):
         self.aptID = aptID
-        self.insuranceID = insuranceID
         self.firstName = firstName
         self.lastName = lastName
-        self.phoneNumber = phoneNumber
         self.email = email
         self.doctor = doctor
-        self.notes = notes
-'''
-@app.route('/')
 
-def index():
-    return render_template('home.html')
-'''
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    form = AppointmentForm()
     #appointment creation page that passes in the days of the week as an array for the calendar table
-    return render_template('create.html', days = ['Sun', 'Mon','Tue','Wed','Thu','Fri','Sat'] )
+    return render_template('create.html', form = form)
 
 @app.route('/success', methods=['GET', 'POST'])
 def success():
     #This portion is reached from the form in the create page
         if request.method == 'POST':
             #Checks if the method of the request is POST and if it is, assign variables from the form and generate a random appointment ID
-            firstName = request.form['fName']
-            lastName = request.form['lName']
-            insuranceID = request.form['insuranceID']
+            firstName = request.form['firstName']
+            lastName = request.form['lastName']
             doctor = request.form['doctors']
-            phone_number = request.form['phoneNum'] 
             email = request.form['email'] 
-            extraInfo = request.form['extranotes']
             aptID = random.randint(100000, 999999)
             
             #push request.form data into appointment object instead of storing them into variables
 
             try: 
                 #In the try block, a new appointment object is created with all variables from the form 
-                new_apt = appointment(aptID, insuranceID, firstName, lastName, phone_number, email, doctor, extraInfo)
+                new_apt = appointment(aptID, firstName, lastName, email, doctor)
 
                 #Taking the data and entering it into the database then committing that action
 
@@ -66,14 +54,11 @@ def success():
                 db.session.commit()
                 
                 #Establishing session storing credentials in the session. Can be used to determine if redirects happen or not
-                session['patient'] = firstName
+                session['firstName'] = firstName
                 session['lastName'] = lastName
-                session['phoneNum'] = phone_number
                 session['aptID'] = aptID
                 session['doctor'] = doctor
-                session['insuranceID'] = insuranceID
                 session['email'] = email
-                session['extraInfo'] = extraInfo
 
 
                 #fix redirecting with parameters
@@ -109,12 +94,11 @@ def delete():
             #setting doctor variable equal to the one in session to display it in the next page
             
             #Once appointment is deleted then pop all data from session
+            session.pop("firstName", None)
             session.pop("lastName",None)
             session.pop("aptID",None)
             session.pop("doctor",None)
-            session.pop("insuranceID",None)
             session.pop("email",None)
-            session.pop("extraInfo",None)
             
             
             return render_template('delete.html', doctor = doctor)
@@ -162,7 +146,8 @@ def search():
 
         If the user is not in the session and inputs an appointment ID to search for and is valid, then display the details for the appointment
         '''
-        return render_template("search.html")
+        lookUpForm = LookUpForm()
+        return render_template("search.html", form = LookUpForm())
 
 if __name__ == "__main__":
     #create db file if none exists
