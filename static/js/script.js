@@ -1,6 +1,6 @@
 alert("Script successfully linked!")
 
-var doctors = ["Dr. Asteeks", "Dr. Chen", "Dr. Bane", "Dr. Brown", "Dr. Baker", "Dr. Campbell", "Dr. Coxs ", "Dr. Rodriguez ", "Dr. Patel ", "Dr. Abels", "Dr. Gangsta ", "Dr. Liu"];
+var doctors = ["Dr. Asteeks", "Dr. Chen", "Dr. Bane", "Dr. Brown", "Dr. Baker", "Dr. Campbell", "Dr. Coxs ", "Dr. Rodriguez ", "Dr. Patel ", "Dr. Abels", "Dr. Abraham ", "Dr. Liu"];
 
 var Months = ["Janurary", "Feburary", "March", "April", "May" , "June", "July", "August" , "September", "October", "November", "December"];
 
@@ -23,6 +23,7 @@ for (var i = 0; i < days.length; i++){
     element.appendChild(tableHeader);
 }
 
+//Fix duplicate doctors showing up in a day
 function getDoctors(){
 
     var select = document.getElementById('doctors');
@@ -33,7 +34,6 @@ function getDoctors(){
         var choice = document.createElement('option');
         doctorName = doctors[Math.floor(Math.random() * doctors.length)];
         choice.innerHTML = doctorName;
-        choice.value = doctorName.replace("Dr. ", '');
         select.appendChild(choice);
     }
 }
@@ -49,7 +49,6 @@ function incrementHeader(){
         monthValue = monthValue + 1;
         document.getElementById('mnthAndYr').innerHTML = Months[monthValue] + " " + year;
     }
-    
 }
 
 function decrementHeader(){
@@ -70,9 +69,5 @@ function unhideForm(){
 
     element.scrollIntoView();
 
-    getDoctors();
-            
-}
-
-
-            
+    getDoctors();           
+}            

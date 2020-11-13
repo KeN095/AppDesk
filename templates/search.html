@@ -10,7 +10,7 @@
 
         {{ form.hidden_tag() }}
 
-        {% for field in form %}
+        {% for field in form if field.widget.input_type != 'hidden'  %}
         <br>
 
         <div>
@@ -27,29 +27,43 @@
         <br>
         
         {% endfor %}
-        <!--
-        <br>
-        <br>
-
-        <div>
-            <label for = "aptSearch">Your appointment ID: </label>
-            <input type = "text" id = "searchID" name = "aptSearch" placeholder = "12345" maxlength="6" title = "Retrieve details from an appointment you made.">
-        </div>
-    
-        <br>
-        <br>
-
-        <div>
-            <button type="submit" form ="obtaindetails">Search</button>
-        </div>
-        -->
 
     </form>
 
+    <div>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+
+                {% for message in messages %}
+                    {{message}}
+                {% endfor %}
+            
+            {% endif %}
+        
+        {% endwith %}
+    </div>
+
     <br>
     <br>
     
-    {% if session['lastName'] %}
+    {% if session['Last name'] %}
+
+    <table style = "width:30%">
+        <tr>
+            <th colspan = "2">Your appointment</th>
+        </tr>
+
+        {% for key, value in session.items() %}
+        
+        <tr>
+            <td>{{key}}</td>
+            <td>{{value}}</td>
+        </tr>
+
+    {% endfor %}
+
+    </table>
+    <!--
     <table style="width:30%"}>
 
         <tr>
@@ -80,16 +94,15 @@
             <td>Email</td>
             <td>{{session['email']}}</td>
         </tr>
-        
-        
+          
     </table>
+-->
 
-    <br>
     <br>
 
     <div>
         
-        <a href = "">
+        <a href = "{{ url_for('update') }}">
             <button type="button">Edit</button>
         </a>
         
@@ -101,40 +114,35 @@
     </div>
     {% endif %}
 
-
-{% if info is defined %}
-
+{% if details %}
 <table style="width:30%">
-    <tr>
-        <th colspan = "2">{{info.firstName}}'s appointment</th>
-    </tr>
-    <tr>
-        <td>First name</td>
-        <td>{{info.firstName}}</td>
-    </tr>
+    <th colspan = "2">{{details['First name']}}'s appointment</th>
 
-    <tr>
-        <td>Last name</td>
-        <td>{{info.lastName}}</td>
-    </tr>
+    {% for key, value in details.items() %}
+        
+        <tr>
+            <td>{{key}}</td>
+            <td>{{value}}</td>
+        </tr>
 
-    <tr>
-        <td>Doctor</td>
-        <td>{{info.doctor}}</td>
-    </tr>
-
-    <tr>
-        <td>Appointment ID</td>
-        <td>{{info.aptID}}</td>
-    </tr>
-
-    <tr>
-        <td>Email</td>
-        <td>{{info.email}}</td>
-    </tr>
+    {% endfor %}
 
 </table>
 
+<br>
+
+<div>
+        
+    <a href = "{{ url_for('update') }}">
+        <button type="button">Edit</button>
+    </a>
+    
+    &nbsp;&nbsp;
+
+    <a href = "{{ url_for('delete') }}">
+        <button type="button">Cancel</button>
+    </a>
+</div>
 
 {% endif %}
 

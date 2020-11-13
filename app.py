@@ -9,6 +9,14 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///appointments.db'
 app.secret_key = "a random string"
 db = SQLAlchemy(app)
 
+details = {
+        "First name": None,
+        "Last name": None,
+        "Appointment ID": None,
+        "Doctor": None,
+        "Email": None
+    }
+
 class appointment(db.Model):
     aptID = db.Column(db.String(6), primary_key = True, nullable = False)
     firstName = db.Column(db.String(20), nullable = False)
@@ -24,44 +32,52 @@ class appointment(db.Model):
         self.email = email
         self.doctor = doctor
 
+@app.errorhandler(404)
+def not_found(e):
+    return render_template('404.html')
+
+'''
+@app.errorhandler(Exception)
+def handle_exception(e):
+    return render_template("500.html")
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     form = AppointmentForm()
     #appointment creation page that passes in the days of the week as an array for the calendar table
     return render_template('create.html', form = form)
+'''
 
-@app.route('/success', methods=['GET', 'POST'])
-def success():
-    #This portion is reached from the form in the create page
-        if request.method == 'POST':
-            #Checks if the method of the request is POST and if it is, assign variables from the form and generate a random appointment ID
+
+@app.route('/', methods = ['GET', 'POST'])
+def create():
+    if request.method == 'POST':
+            #If the user fills out the form, then the details from the form is assigned into the variables and is asigned a 6 digit appointment ID
             firstName = request.form['firstName']
             lastName = request.form['lastName']
             doctor = request.form['doctors']
             email = request.form['email'] 
             aptID = random.randint(100000, 999999)
-            
-            #push request.form data into appointment object instead of storing them into variables
 
             try: 
-                #In the try block, a new appointment object is created with all variables from the form 
+                #New object is created to store in database
                 new_apt = appointment(aptID, firstName, lastName, email, doctor)
 
-                #Taking the data and entering it into the database then committing that action
+                #Data will be stored when it is commited
 
                 db.session.add(new_apt)
                 db.session.commit()
                 
-                #Establishing session storing credentials in the session. Can be used to determine if redirects happen or not
-                session['firstName'] = firstName
-                session['lastName'] = lastName
-                session['aptID'] = aptID
-                session['doctor'] = doctor
-                session['email'] = email
-
+                #Establishing session by storing credentials in the session after successful database operation. Can be used to determine if redirects take place
+                session['patient']= True
+                session['First name'] = firstName
+                session['Last name'] = lastName
+                session['Appointment ID'] = aptID
+                session['Doctor'] = doctor
+                session['Email'] = email
 
                 #fix redirecting with parameters
+                #flash message here
                 return render_template('success.html')
                 #return render_template('success.html', ID = session["aptID"], lastname = session['lastName'], doc = session['doctor'])
                 #if there is an error, it is because the primary key, the insurance ID, is the same in the database
@@ -69,76 +85,165 @@ def success():
             except:
                 #If there is a failure in entering in appointment data then the message below will be displayed
                 return 'There was an issue adding your appointment to the system. Please make sure all your details are correct'   
-        if "lastName" in session:
-            #Most likely will show the same success page long after appointment was created
-            return render_template('success.html')
-        else:
-            #flash("You have not yet made an appointment.")
-            #If there is no session data then redirect to the home page to create an appointment
-            return redirect(url_for('index'))
+    if "patient" in session:
+        #Shows the same succcess page if user is in the session
+        return render_template('success.html')
+    else:
+        
+        #If no session data exists then display the page normally
+        form = AppointmentForm()
+        return render_template('create.html', form = form)
+    
+
+    form = AppointmentForm()
+
+    return render_template('create.html', form = form)
+
+@app.route('/success', methods=['GET', 'POST'])
+def success():
+
+    if "patient" not in session:
+        return redirect(url_for('create'))
+
+    return render_template('succcess.html')
+
+    
+    #This portion is reached from the form in the create page
+        
+#debug purposes only, shows all of database
+@app.route("/views")
+def views():
+    return render_template("views.html", appointments = appointment.query.all())           
 
 @app.route("/delete", methods = ['GET','POST'])
 def delete():
     #This page can delete a users appointment
-    if "lastName" in session:
+    if "patient" in session:
         #First checks if the user is in session and if they are, then enter in the try block
         try:
             #appointment_to_delete = appointment.query.filter_by(aptID = session["aptID"]).first()
             #above statement works for querying based on primary key
 
             #Finding the appointment ID by using the appointmentID in the session and then deleting that
-            appointment.query.filter_by(aptID = session["aptID"]).delete()
+            appointment.query.filter_by(aptID = session["Appointment ID"]).delete()
             db.session.commit()
 
-            doctor = session['doctor']
+            doctor = session['Doctor']
             #setting doctor variable equal to the one in session to display it in the next page
             
             #Once appointment is deleted then pop all data from session
-            session.pop("firstName", None)
-            session.pop("lastName",None)
-            session.pop("aptID",None)
-            session.pop("doctor",None)
-            session.pop("email",None)
             
+            session.pop("First name", None)
+            session.pop("Last name",None)
+            session.pop("Appointment ID",None)
+            session.pop("Doctor",None)
+            session.pop("Email",None)
             
+            #flash message here 
             return render_template('delete.html', doctor = doctor)
         except:
             #Below message is displayed if appointment was unable to be deleted
             return "Unable to delete data. Try again."
+    else:
+        return redirect(url_for('search'))
 
 @app.route("/update", methods = ['GET','POST'])
 def update():
+
+    if request.method == "POST":
+        try:
+            if "patient" in session:
+                info = appointment.query.filter_by(aptID = session["Appointment ID"]).first()
+            else:
+                info = appointment.query.filter_by(aptID = details["Appointment ID"]).first()
+                
+
+            info.firstName = request.form['firstName']
+            info.lastName = request.form['lastName']
+            info.email = request.form['email']
+            
+            db.session.commit()
+
+            session['First name'] = request.form['firstName']
+            session['Last name'] = request.form['lastName']
+            session['Email'] = request.form['email']
+
+        except Exception as e:
+            return render_template("500.html", error = e)
+
     #try to utilize create page
 
     #Incomplete but allows to update appointment information
+    #incomplete but flash message here 
+
+    form = AppointmentForm()
+
+    # Also has to be checked if a user has a session but also looks up another appointment and tries to edit that instead
 
     if "patient" in session:
-        return render_template("update.html")
+        #If user visits the update page, then their information is filled in the fields
+        form.firstName.data = session['First name']
+        form.lastName.data = session['Last name']
+        form.email.data = session['Email']
+        #form.doctors.data = session['Doctor']
+
+        return render_template("update.html", form = form)
+    
+    if details["Appointment ID"] is not None:
+        #If user looks up their appointment details first and selects the edit option from there, then the details 
+        #will get passed into the update page and the fields will be prefilled with the information
+        form.firstName.data = details['First name']
+        form.lastName.data = details['Last name']
+        form.email.data = details['Email']
+        #form.doctors.data = session['Doctor']
+
+        return render_template("update.html", form = form)
     else:
-        return redirect(url_for('index'))
+        #If there is no information to fill in the fields, then redirect to the search page
+        return redirect(url_for('search'))
 
 
 @app.route("/search", methods = ['GET','POST'])
 def search():
     #Allows to obtain appointment information by inputting appointment ID
-    if request.method == 'POST':
-        #If the user inputs an appointment ID, then assign the aptID to the value that was entered in
-        aptID = request.form['aptSearch']
+    form = LookUpForm()
+    #Key:Value
+    #To get key names:names in details print details
+    #To get value: details[names]
+
+    if form.validate_on_submit():
+        form.aptIDLookUp.data = ""
+        #If the user enters an appointment ID, then assign the aptID to the value that was entered in
+        aptID = request.form['aptIDLookUp']
       
+        #set info equal to the object obtained in database
+
         try:
-            #set info equal to the object obtained in database
+        
             info = appointment.query.filter_by(aptID = aptID).first()
 
-            #Passing in info object, whether it is defined or not
-            return render_template('search.html', info = info)
-        
-        except:
-            return "Something went wrong.."
-    
+            details["First name"] = info.firstName
+            details["Last name"] = info.lastName
+            details["Appointment ID"] = info.aptID
+            details["Doctor"] = info.doctor
+            details["Email"] = info.email
+
+            #Pass in dictonary object 'details' for easier iterations
+            return render_template('search.html', form = form, details = details)
+        except Exception as e:
+            return render_template("404.html", error = e)
+
     else:
         #Search page is displayed if visited normally
-
         '''
+
+        There are different ways to search for someones appointment:
+        In the search page you can display someones appointment if they enter the right appointment ID.
+        Since appointment ID, are unique only to use, there could be a chance someone else could know that.
+        The issue is how would you verify someones identity, if changes were made to an appointment, through another piece of personal information that only the user knows
+        or by sending an email, something which the user only has access to.
+        If done by another piece of personal information, then the insurance ID attribute should be added to the database
+
         On arrival of search page, there are checks made in jinja.
         If the user is not in the session, then show the appointment ID field.
         If they are in the session then display a table filled with the appointment details and display
@@ -146,8 +251,22 @@ def search():
 
         If the user is not in the session and inputs an appointment ID to search for and is valid, then display the details for the appointment
         '''
-        lookUpForm = LookUpForm()
-        return render_template("search.html", form = LookUpForm())
+        '''
+        if "First name" in session:
+
+            currentSession = {
+
+                "First name": session['First name'],
+                "Last name": session['Last name'],
+                "Appointment ID": session['Appointment ID'],
+                "Doctor": session['Doctor'],
+                "Email": session['Email'] 
+
+            }
+            return render_template("search.html", form = form, CS = currentSession)
+        '''
+        return render_template("search.html", form = form)
+        
 
 if __name__ == "__main__":
     #create db file if none exists

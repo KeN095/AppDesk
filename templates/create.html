@@ -113,10 +113,10 @@
             <br>
             <br>
 
-            <form action = "{{ url_for('success') }}" method = "POST" id = "aptdetails">
+            <form action = "{{ url_for('create') }}" method = "POST" id = "aptdetails">
                 {{ form.hidden_tag() }}
 
-                {% for field in form %}
+                {% for field in form if field.widget.input_type != 'hidden' %}
                 <br>
 
                 <div>
@@ -128,10 +128,10 @@
                         <br>
                         {{ field }}
                     {% endif %}
-                    
                 </div>
                 <br>
                 
                 {% endfor %}
+            </form>
         </section>
     {% endblock %}
