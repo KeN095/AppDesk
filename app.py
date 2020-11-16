@@ -69,7 +69,7 @@ def create():
                 db.session.commit()
                 
                 #Establishing session by storing credentials in the session after successful database operation. Can be used to determine if redirects take place
-                session['patient']= True
+                #session['patient'] = True
                 session['First name'] = firstName
                 session['Last name'] = lastName
                 session['Appointment ID'] = aptID
@@ -85,7 +85,7 @@ def create():
             except:
                 #If there is a failure in entering in appointment data then the message below will be displayed
                 return 'There was an issue adding your appointment to the system. Please make sure all your details are correct'   
-    if "patient" in session:
+    if "Last name" in session:
         #Shows the same succcess page if user is in the session
         return render_template('success.html')
     else:
@@ -102,7 +102,7 @@ def create():
 @app.route('/success', methods=['GET', 'POST'])
 def success():
 
-    if "patient" not in session:
+    if "Last name" not in session:
         return redirect(url_for('create'))
 
     return render_template('succcess.html')
@@ -118,7 +118,7 @@ def views():
 @app.route("/delete", methods = ['GET','POST'])
 def delete():
     #This page can delete a users appointment
-    if "patient" in session:
+    if "Last name" in session:
         #First checks if the user is in session and if they are, then enter in the try block
         try:
             #appointment_to_delete = appointment.query.filter_by(aptID = session["aptID"]).first()
@@ -152,7 +152,7 @@ def update():
 
     if request.method == "POST":
         try:
-            if "patient" in session:
+            if "Last name" in session:
                 info = appointment.query.filter_by(aptID = session["Appointment ID"]).first()
             else:
                 info = appointment.query.filter_by(aptID = details["Appointment ID"]).first()
@@ -180,7 +180,7 @@ def update():
 
     # Also has to be checked if a user has a session but also looks up another appointment and tries to edit that instead
 
-    if "patient" in session:
+    if "Last name" in session:
         #If user visits the update page, then their information is filled in the fields
         form.firstName.data = session['First name']
         form.lastName.data = session['Last name']
@@ -211,7 +211,7 @@ def search():
     #To get key names:names in details print details
     #To get value: details[names]
 
-    if form.validate_on_submit():
+    if request.method == "POST":
         form.aptIDLookUp.data = ""
         #If the user enters an appointment ID, then assign the aptID to the value that was entered in
         aptID = request.form['aptIDLookUp']
