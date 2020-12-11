@@ -48,7 +48,20 @@ def index():
     return render_template('create.html', form = form)
 '''
 
+def pop():
+    session.pop("First name", None)
+    session.pop("Last name",None)
+    session.pop("Appointment ID",None)
+    session.pop("Doctor",None)
+    session.pop("Email",None)
+    session.pop('csrf_token', '')
 
+#use this function to figure out why the search -> update -> search bug is happening
+def displaySession():
+   for key in session:
+       print(key + ": " + session[key] + "\n")
+
+    
 @app.route('/', methods = ['GET', 'POST'])
 def create():
     if request.method == 'POST':
@@ -69,7 +82,7 @@ def create():
                 db.session.commit()
                 
                 #Establishing session by storing credentials in the session after successful database operation. Can be used to determine if redirects take place
-                #session['patient'] = True
+                #session['patient']= True
                 session['First name'] = firstName
                 session['Last name'] = lastName
                 session['Appointment ID'] = aptID
@@ -102,7 +115,7 @@ def create():
 @app.route('/success', methods=['GET', 'POST'])
 def success():
 
-    if "Last name" not in session:
+    if "patient" not in session:
         return redirect(url_for('create'))
 
     return render_template('succcess.html')
@@ -118,38 +131,48 @@ def views():
 @app.route("/delete", methods = ['GET','POST'])
 def delete():
     #This page can delete a users appointment
-    if "Last name" in session:
         #First checks if the user is in session and if they are, then enter in the try block
         try:
+            if "Last name" in session:
             #appointment_to_delete = appointment.query.filter_by(aptID = session["aptID"]).first()
             #above statement works for querying based on primary key
 
-            #Finding the appointment ID by using the appointmentID in the session and then deleting that
-            appointment.query.filter_by(aptID = session["Appointment ID"]).delete()
-            db.session.commit()
+                #Finding the appointment ID by using the appointmentID in the session and then deleting that
+                appointment.query.filter_by(aptID = session["Appointment ID"]).delete()
+                db.session.commit()
 
-            doctor = session['Doctor']
-            #setting doctor variable equal to the one in session to display it in the next page
+                doctor = session['Doctor']
+                #setting doctor variable equal to the one in session to display it in the next page
+                
+                #Once appointment is deleted then pop all data from session
+                
+                session.pop("First name", None)
+                session.pop("Last name",None)
+                session.pop("Appointment ID",None)
+                session.pop("Doctor",None)
+                session.pop("Email",None)
+                session.pop('csrf_token', '')
+
+            elif details.get("Appointment ID") is not None:
+                appointment.query.filter_by(aptID = details["Appointment ID"]).delete()
+                db.session.commit()
             
-            #Once appointment is deleted then pop all data from session
+                doctor = details['Doctor']
+
+                for key in details:
+                    details[key] = None    
             
-            session.pop("First name", None)
-            session.pop("Last name",None)
-            session.pop("Appointment ID",None)
-            session.pop("Doctor",None)
-            session.pop("Email",None)
             
-            #flash message here 
             return render_template('delete.html', doctor = doctor)
         except:
             #Below message is displayed if appointment was unable to be deleted
             return "Unable to delete data. Try again."
-    else:
+    
         return redirect(url_for('search'))
 
 @app.route("/update", methods = ['GET','POST'])
 def update():
-
+    #Below block of code is only reached when user submits their updated info
     if request.method == "POST":
         try:
             if "Last name" in session:
@@ -157,16 +180,20 @@ def update():
             else:
                 info = appointment.query.filter_by(aptID = details["Appointment ID"]).first()
                 
-
             info.firstName = request.form['firstName']
             info.lastName = request.form['lastName']
             info.email = request.form['email']
             
             db.session.commit()
 
-            session['First name'] = request.form['firstName']
-            session['Last name'] = request.form['lastName']
-            session['Email'] = request.form['email']
+            if "Last name" in session:
+                session['First name'] = request.form['firstName']
+                session['Last name'] = request.form['lastName']
+                session['Email'] = request.form['email']
+            else:
+                details['First name'] = request.form['firstName']
+                details['Last name'] = request.form['lastName']
+                details['Email'] = request.form['email']
 
         except Exception as e:
             return render_template("500.html", error = e)
@@ -180,22 +207,28 @@ def update():
 
     # Also has to be checked if a user has a session but also looks up another appointment and tries to edit that instead
 
+    #If user visits the update page, then their information is filled in the fields
     if "Last name" in session:
-        #If user visits the update page, then their information is filled in the fields
+        
         form.firstName.data = session['First name']
         form.lastName.data = session['Last name']
         form.email.data = session['Email']
         #form.doctors.data = session['Doctor']
 
+        displaySession()
+        print("Update went into session")
         return render_template("update.html", form = form)
     
-    if details["Appointment ID"] is not None:
+    elif details.get("Appointment ID") is not None:
         #If user looks up their appointment details first and selects the edit option from there, then the details 
         #will get passed into the update page and the fields will be prefilled with the information
         form.firstName.data = details['First name']
         form.lastName.data = details['Last name']
         form.email.data = details['Email']
         #form.doctors.data = session['Doctor']
+
+        displaySession()
+        print("Update went into details")
 
         return render_template("update.html", form = form)
     else:
@@ -211,7 +244,7 @@ def search():
     #To get key names:names in details print details
     #To get value: details[names]
 
-    if request.method == "POST":
+    if form.validate_on_submit():
         form.aptIDLookUp.data = ""
         #If the user enters an appointment ID, then assign the aptID to the value that was entered in
         aptID = request.form['aptIDLookUp']
@@ -265,6 +298,7 @@ def search():
             }
             return render_template("search.html", form = form, CS = currentSession)
         '''
+        displaySession()
         return render_template("search.html", form = form)
         
 
