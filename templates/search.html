@@ -11,7 +11,7 @@
         {{ form.hidden_tag() }}
 
         {% for field in form if field.widget.input_type != 'hidden'  %}
-        <br>
+        
 
         <div>
             {% if field.type == "SubmitField" %}
@@ -53,7 +53,7 @@
             <th colspan = "2">Your appointment</th>
         </tr>
 
-        {% for key, value in session.items() %}
+        {% for key, value in session.items() if key != 'csrf_token' %}
         
         <tr>
             <td>{{key}}</td>
@@ -99,22 +99,26 @@
 -->
 
     <br>
+    <br>
 
     <div>
         
         <a href = "{{ url_for('update') }}">
-            <button type="button">Edit</button>
+            <button type="button">Edit Appointment</button>
         </a>
-        
-        &nbsp;&nbsp;
+
+        &nbsp; &nbsp;
 
         <a href = "{{ url_for('delete') }}">
-            <button type="button">Cancel</button>
+            <button type="button">Cancel Appointment</button>
         </a>
+
     </div>
     {% endif %}
 
 {% if details %}
+<br>
+
 <table style="width:30%">
     <th colspan = "2">{{details['First name']}}'s appointment</th>
 
@@ -131,18 +135,18 @@
 
 <br>
 
-<div>
-        
-    <a href = "{{ url_for('update') }}">
-        <button type="button">Edit</button>
-    </a>
-    
-    &nbsp;&nbsp;
 
-    <a href = "{{ url_for('delete') }}">
-        <button type="button">Cancel</button>
+        
+    <a href = "{{ url_for('update') }}" class="divide">
+        <button type="button">Edit Appointment</button>
     </a>
-</div>
+
+
+
+    <a href = "{{ url_for('delete') }}" class="divide">
+        <button type="button">Cancel Appointment</button>
+    </a>
+
 
 {% endif %}
 

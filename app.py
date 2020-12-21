@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from flask_sqlalchemy import SQLAlchemy
 from forms import AppointmentForm, LookUpForm
 import random
+import calendar
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///appointments.db'
@@ -102,6 +103,8 @@ def create():
         #Shows the same succcess page if user is in the session
         return render_template('success.html')
     else:
+
+        print("\n" + calendar.month(2020, 12))
         
         #If no session data exists then display the page normally
         form = AppointmentForm()
@@ -146,11 +149,11 @@ def delete():
                 
                 #Once appointment is deleted then pop all data from session
                 
-                session.pop("First name", None)
-                session.pop("Last name",None)
-                session.pop("Appointment ID",None)
-                session.pop("Doctor",None)
-                session.pop("Email",None)
+                session.pop("First name",  None)
+                session.pop("Last name", None)
+                session.pop("Appointment ID", None)
+                session.pop("Doctor", None)
+                session.pop("Email", None)
                 session.pop('csrf_token', '')
 
             elif details.get("Appointment ID") is not None:
@@ -195,6 +198,8 @@ def update():
                 details['Last name'] = request.form['lastName']
                 details['Email'] = request.form['email']
 
+            
+
         except Exception as e:
             return render_template("500.html", error = e)
 
@@ -215,8 +220,8 @@ def update():
         form.email.data = session['Email']
         #form.doctors.data = session['Doctor']
 
-        displaySession()
-        print("Update went into session")
+        #displaySession()
+        #print("Update went into session")
         return render_template("update.html", form = form)
     
     elif details.get("Appointment ID") is not None:
@@ -227,8 +232,8 @@ def update():
         form.email.data = details['Email']
         #form.doctors.data = session['Doctor']
 
-        displaySession()
-        print("Update went into details")
+        #displaySession()
+        #print("Update went into details")
 
         return render_template("update.html", form = form)
     else:
@@ -245,9 +250,9 @@ def search():
     #To get value: details[names]
 
     if form.validate_on_submit():
-        form.aptIDLookUp.data = ""
+        form.idSearch.data = ""
         #If the user enters an appointment ID, then assign the aptID to the value that was entered in
-        aptID = request.form['aptIDLookUp']
+        aptID = request.form['idSearch']
       
         #set info equal to the object obtained in database
 
@@ -298,7 +303,7 @@ def search():
             }
             return render_template("search.html", form = form, CS = currentSession)
         '''
-        displaySession()
+        #displaySession()
         return render_template("search.html", form = form)
         
 

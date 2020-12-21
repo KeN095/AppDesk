@@ -16,6 +16,6 @@ class AppointmentForm(FlaskForm):
 
 class LookUpForm(FlaskForm):
 
-    aptIDLookUp = StringField('Your Appointment ID: ', validators = [DataRequired(), Length(min = 6, max = 6)])
-    submit = SubmitField('Submit')
+    idSearch = StringField('Your Appointment ID: ', validators = [DataRequired(), Length(min = 6, max = 6)])
+    submitSearch = SubmitField('Submit')
 
