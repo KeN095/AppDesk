@@ -1,13 +1,13 @@
-# AppDesk
-AppDesk, short for Appointment Desk, is a CRUD app made in Flask that allows user to create, search for, update and delete appointments with pre-selected doctors in a basic calendar-GUI
+# AppDesk (Subject to change)
+AppDesk, short for Appointment Desk, is a CRUD app made in Flask that allows users to create, search for, update and delete appointments with doctors from a calendar
 
 **Create**: Asks user for basic information and stores it in a database
 
-**Search**: Search for appointment using an appointment ID, and display the contents of the appointment on the same page
+**Search**: Search for appointment using an appointment ID, and display the contents of that appointment 
 
-**Update**: Updating information on users appointment if made already
+**Update**: Updating information on users appointment if one already exists
 
-**Delete**
+**Delete**: Delete an appointment
 
 ## Todo ##
 
@@ -22,7 +22,7 @@ AppDesk, short for Appointment Desk, is a CRUD app made in Flask that allows use
 
 - [ ] Have a confirm page to see if details are correct
 
-- [ ] Input verification in HTML and python
+- [ ] Input verification in HTML and/or python
 
 
 **Search**
@@ -60,25 +60,9 @@ AppDesk, short for Appointment Desk, is a CRUD app made in Flask that allows use
 
 - [ ] Emailing (for confirming any appointment action, reminder before appointment, and retrieving lost appointment ID)
 
-- [ ] Maybe determine if inputted email is valid
-
 - [ ] Add in message flashing
 
 - [ ] Define how long session data is valid for (Should be valid as long as you are on the tab)
-
-## Pages ##
-
-* Create - For creating appointments, also the landing page (Extends home)
-
-* Search - For retrieving appointment information by inputting appointment ID (Extends home)
-
-* Confirm - For confirming appointment details and any appointment action (Extends home)
-
-* Success - For showing users action was done sucessfully (Extends home)
-
-* Update - For updating appointments (Extends create or it uses create with textbox prefilled from data from database)
-
-* Home - empty page/a template to extend of off
 
 ## Page routes ##
 
@@ -130,11 +114,3 @@ Create.html :arrow_right: Search/login.html :arrow_right: Create.html :arrow_rig
 * ~~Extra notes - Extra notes the user can inform of for their appointment. Almost has no use in app.~~
 
 * ~~Insurance ID - The users insurance ID number. Almost has no use in the app other than a secondary unique key in identifying a person~~
-
-Total attributes: 9  
-Idle attributes: 3  
-Useful attributes: 6  
-
-
-
-

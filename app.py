@@ -1,14 +1,21 @@
-from flask import Flask, render_template, url_for, request, redirect, session, flash
+from flask import Flask, render_template, url_for, request, redirect, flash, session
 from datetime import datetime, timedelta
 from flask_sqlalchemy import SQLAlchemy
+from flask_session import Session
 from forms import AppointmentForm, LookUpForm
 import random
 import calendar
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///appointments.db'
-app.secret_key = "a random string"
+app.config["SECRET_KEY"] = "dGhpcyBpcyBzdXBwb3NlZCB0byBiZSBhIHNlY3JldCBrZXkgYnV0IGlmIHlvdSBnb3QgaGVyZSBjb25ncmF0dWxhdGlvbnMK"
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+app.config['SESSION_TYPE'] = 'sqlalchemy'
+
 db = SQLAlchemy(app)
+
+app.config['SESSION_SQLALCHEMY'] = db
+
+sess = Session(app)
 
 details = {
         "First name": None,
